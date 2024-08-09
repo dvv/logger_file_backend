@@ -34,6 +34,10 @@ defmodule LoggerFileBackend do
         %{level: min_level, level_cmp: level_cmp, metadata_filter: metadata_filter, metadata_reject: metadata_reject} =
           state
       ) do
+    level = case level do
+      :warn -> :warning
+      _ -> level
+    end
     if level_matches?(level, min_level, level_cmp) and
          metadata_matches?(md, metadata_filter) and
          (is_nil(metadata_reject) or !metadata_matches?(md, metadata_reject)) do
